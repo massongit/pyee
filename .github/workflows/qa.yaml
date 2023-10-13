@@ -14,7 +14,9 @@ jobs:
       - name: Make versions
         id: make-versions
         run: |
-          echo "versions=[$(yq -p toml -o toml '.project.classifiers[]' pyproject.toml | grep "Programming Language :: Python :: " | grep "\." | sed -e 's/Programming Language :: Python :: \([0-9.]*\)$/"\1"/g' | tr '\n' ',' | sed -e 's/,$//g')]" > "$GITHUB_OUTPUT"
+          classifiers="$(yq -p toml -o toml '.project.classifiers[]' pyproject.toml | grep "Programming Language :: Python :: " | grep "\.")"
+          versions="$(echo "$classifiers" | sed -e 's/Programming Language :: Python :: \([0-9.]*\)$/"\1"/g' | tr '\n' ',' | sed -e 's/,$//g')"
+          echo "versions=[$versions]" > "$GITHUB_OUTPUT"
 
   qa:
     name: Run QA checks
