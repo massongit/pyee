@@ -13,7 +13,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Make versions
         id: make-versions
-        run: echo "[$(yq -p toml -o toml '.project.classifiers[]' pyproject.toml | grep "Programming Language :: Python :: " | grep "\." | sed -e 's/Programming Language :: Python :: //g' | tr '\n' ',' | sed -e 's/,$//g')]" > "$GITHUB_OUTPUT"
+        run: |
+          echo "[$(yq -p toml -o toml '.project.classifiers[]' pyproject.toml | grep "Programming Language :: Python :: " | grep "\." | sed -e 's/Programming Language :: Python :: //g' | tr '\n' ',' | sed -e 's/,$//g')]" > "$GITHUB_OUTPUT"
 
   qa:
     name: Run QA checks
